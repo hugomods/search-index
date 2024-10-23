@@ -1,0 +1,5 @@
+{{- $headings := slice }}
+{{- with .Fragments }}
+  {{- $headings = partial "search-index/functions/walk-headings" (dict "Headings" .Headings "PID" -1) }}
+{{- end }}
+{{- return $headings -}}
