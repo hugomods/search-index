@@ -2,6 +2,7 @@
 {{- $indexContent := default false site.Params.search.index_content -}}
 {{- $filterYears := default true site.Params.search.filter_years }}
 {{- $pages := partial "search-index/functions/pages" . -}}
+{{- $relBaseURL := relURL "" }}
 {{- range $pages -}}
   {{- $page := . -}}
   {{- $item := newScratch -}}
@@ -14,7 +15,7 @@
   {{- end }}
   {{- $item.Set "kind" .Kind -}}
   {{- $item.Set "lang" .Language.Lang -}}
-  {{- $item.Set "url" .RelPermalink -}}
+  {{- $item.Set "url" (strings.TrimPrefix $relBaseURL .RelPermalink) -}}
   {{- $item.Set "date" .Date.Unix -}}
   {{- if $filterYears -}}
     {{- $item.Set "year" (.Date.Format "2006") -}}
@@ -59,7 +60,7 @@
 {{- end -}}
 {{- $years := partial "search-index/functions/years" . -}}
 {{- $data := dict
-  "baseURL" site.BaseURL
+  "baseURL" (absURL site.BaseURL)
   "langs" $langs.Values
   "pages" $items
   "taxonomies" $taxonomies.Values
