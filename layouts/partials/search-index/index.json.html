@@ -26,10 +26,11 @@
       {{- $img := index . 0 -}}
       {{- $item.Set "img" $img.Permalink -}}
       {{- with $img.Image -}}
-        {{- with .Width -}}
+        {{- $isValid := not (in (slice "avif" "svg") .MediaType.SubType) }}
+        {{- with and $isValid .Width -}}
           {{- $item.Set "img_w" . -}}
         {{- end -}}
-        {{- with .Height -}}
+        {{- with and $isValid .Height -}}
           {{- $item.Set "img_h" . -}}
         {{- end -}}
       {{- end -}}
